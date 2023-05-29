@@ -1,16 +1,20 @@
 # NetSec-Analyzer
+
 NetSecAnalyzer is a powerful tool designed to detect various types of attacks in WiFi networks and networks in general. With NetSecAnalyzer, you can capture live traffic and analyze captured files to identify potential security threats. This README provides an overview of the tool's features and instructions on how to use them effectively.
+
 ## Table of contents 
-* Installation
-* Usage
-  * Capture Live Traffic
-  * Analyze Captured File
-    * Detection of Wireless Network Attacks
-    * Scan for Deauthentication Attack
-    * Scan for Disassociation Attack
-    * Scan for Authentication DoS
-    * Scan for Fake AP Beacon Flood
-    * Scan for WPS Bruteforce Attack
+
+* [Table of contents](#table-of-contents)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [Capture Live Traffic](#capture-live-traffic)
+  * [Analyze Captured File](#analyze-captured-file)
+  * [Detection of Wireless Network Attacks](#detection-of-wireless-network-attacks)
+    * [Scan for Deauthentication Attack](#scan-for-deauthentication-attack)
+    * [Scan for Disassociation Attack](#scan-for-disassociation-attack)
+    * [Scan for Authentication DoS](#scan-for-authentication-dos)
+    * [Scan for Fake AP Beacon Flood](#scan-for-fake-ap-beacon-flood)
+    * [Scan for WPS Bruteforce Attack](#scan-for-wps-bruteforce-attack)
   * Detection of Network Attacks
     * Scan for ARP Poisoning
     * Scan for ICMP Flood
@@ -35,3 +39,23 @@ NetSecAnalyzer is a powerful tool designed to detect various types of attacks in
 * Contributing
 * License
 * Contact
+
+## Installation
+
+## Usage
+
+### Capture Live Traffic
+
+### Analyze Captured File
+
+### Detection of Wireless Network Attacks
+
+#### Scan for Deauthentication Attack
+
+#### Scan for Disassociation Attack
+
+#### Scan for Authentication DoS
+
+#### Scan for Fake AP Beacon Flood
+
+#### Scan for WPS Bruteforce Attack
