@@ -1,14 +1,13 @@
-# NetSec-Analyzer
+# WiFi-NID
 
-NetSecAnalyzer is a powerful tool designed to detect various types of attacks in WiFi networks and networks in general. With NetSecAnalyzer, you can capture live traffic and analyze captured files to identify potential security threats. This README provides an overview of the tool's features and instructions on how to use them effectively.
+![image](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/e1084865-aebf-41e6-93a5-2fcc545db0a9)
+
+WiFi-NID is a powerful tool designed to detect various types of attacks in WiFi networks and networks in general. With WiFi-NID, you can capture live traffic and analyze captured files to identify potential security threats. This README provides an overview of the tool's features and instructions on how to use them effectively.
 
 ## Table of contents 
 
-* [Table of contents](#table-of-contents)
 * [Installation](#installation)
-* [Usage](#usage)
-  * [Capture Live Traffic](#capture-live-traffic)
-  * [Analyze Captured File](#analyze-captured-file)
+* [Supported features](#supported-features)
   * [Detection of Wireless Network Attacks](#detection-of-wireless-network-attacks)
     * [Scan for Deauthentication Attack](#scan-for-deauthentication-attack)
     * [Scan for Disassociation Attack](#scan-for-disassociation-attack)
@@ -42,13 +41,21 @@ NetSecAnalyzer is a powerful tool designed to detect various types of attacks in
 
 ## Installation
 
-## Usage
+## Supported features
 
-### Capture Live Traffic
-
-### Analyze Captured File
+![image](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/6d7862aa-00ab-4e9a-b47c-62bec5d6a40a)
 
 ### Detection of Wireless Network Attacks
+
+![image](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/fb7ceeed-b4d2-4c36-b926-3fd53c853126)
+
+From here can detect:
+- Deauthentication Attack
+- Disassociation Attack
+- Authentication DoS
+- Fake AP Beacon Flood
+- WPS Bruteforce Attack
+
 #### Scan for Deauthentication Attack
 #### Scan for Disassociation Attack
 #### Scan for Authentication DoS
