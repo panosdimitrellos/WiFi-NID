@@ -1,6 +1,8 @@
 # WiFi-NID
 
-![image](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/e1084865-aebf-41e6-93a5-2fcc545db0a9)
+![349123291_6195322277252609_8989747047611504562_n](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/a8601de0-6a91-4858-a943-ae0a4c8acbac) 
+
+
 
 WiFi-NID is a powerful tool designed to detect various types of attacks in WiFi networks and networks in general. With WiFi-NID, you can capture live traffic and analyze captured files to identify potential security threats. This README provides an overview of the tool's features and instructions on how to use them effectively.
 
