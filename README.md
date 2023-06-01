@@ -1,6 +1,6 @@
 # WiFi-NID
 
-![349123291_6195322277252609_8989747047611504562_n](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/a8601de0-6a91-4858-a943-ae0a4c8acbac) 
+![349123291_6195322277252609_8989747047611504562_n](https://github.com/panosdimitrellos/NetSec-Analyzer/assets/34653518/3fd19fda-8080-4c36-9044-ca206bb859cf)
 
 
 
