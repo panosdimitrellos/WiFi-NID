@@ -32,7 +32,7 @@ git clone https://github.com/panosdimitrellos/WiFi-NID.git
 ## Supported features
 
 Capture and analyze pcap packets
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/ff7a4e0d-7032-4f77-98fb-0871ffa1585e)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/427f5d78-8b86-491e-bb5d-17c259bf01e9)
 
 ### Detection of Wireless Network Attacks
 
