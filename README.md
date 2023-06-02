@@ -24,74 +24,94 @@ WiFi-NID offers an innovative approach to detecting malicious activity in WiFi n
 
 ## Installation
 
-Ideally, you should be able to just type:
+Download the repository from Github as follows:
+
 ```
 git clone https://github.com/panosdimitrellos/WiFi-NID.git 
 ```
-After that go to the downloaded folder and install install the required packages:
-```
-bash install_required_packages.sh
-```
+### Running the Bash Script on Linux
+
+To run WiFi-NID tool on Linux follow these steps:
+
+- Navigate to the directory containing the Bash script using the `cd` command.
+- Install the required packages by executing `./install_required_packages.sh`.
+- Run the script by executing `./WiFi-NID.sh`.
+
+### Running the Bash Script on Windows
+
+To run WiFi-NID tool on Windows, you can use a Unix-like environment. Here are the steps to follow:
+
+1. **Install a Unix-like environment**:
+   - For Git Bash: Download and install Git from the official website: https://git-scm.com/.
+   - For Cygwin: Download and run the Cygwin installer from the official website: https://www.cygwin.com/.
+   - For Windows Subsystem for Linux (WSL): Follow the official Microsoft documentation to install WSL and choose a Linux distribution: https://docs.microsoft.com/en-us/windows/wsl/.
+
+2. **Run the Bash script**:
+   - Open the installed Unix-like environment (e.g., Git Bash, Cygwin, or WSL).
+   - Navigate to the directory containing the Bash script using the `cd` command.
+   - Run the script by executing `./WiFi-NID.sh`.
+
+Note: Make sure the Bash script has the execute permission. You can set the permission using `chmod +x script.sh`.
 
 ## Supported features
 
 Analyze already captured pcap files or capture live traffic and start analyzing them.
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/427f5d78-8b86-491e-bb5d-17c259bf01e9)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/94f7b6bd-4e98-4d80-8978-5615921890ef)
 
 ### Detection of Wireless Network Attacks
 
 Using this option we can detect:
-* Deauthentication Attacks - from tools like aireplay-ng, mdk3 and mdk4.
-* Disassociation Attacks - from tools like mdk3 and mdk4.
-* Authentication DoSs - from tools like mdk3 and mdk4.
-* Fake AP Beacon Flood - from tools like mdk3 and mdk4.
-* WPS Bruteforce Attacks - from tools like reaver and bully.
+* **Deauthentication Attacks** - from tools like aireplay-ng, mdk3 and mdk4.
+* **Disassociation Attacks** - from tools like mdk3 and mdk4.
+* **Authentication DoSs** - from tools like mdk3 and mdk4.
+* **Fake AP Beacon Flood** - from tools like mdk3 and mdk4.
+* **WPS Bruteforce Attacks** - from tools like reaver and bully.
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/91834c07-2d4d-4c6a-bc4d-514ba5851fec)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/7a4d6ee4-177e-4bfa-887e-b8878b538e36)
 
 ### Detection of Network Attacks
 
 Using this option we can detect:
-* ARP Poisoning - from tools like arpspoof and ettercap.
-* ICMP Flood - from tools like fping and hping.
-* VLAN Hopping -  from tools like frogger and yersinia (future work).
+* **ARP Poisoning** - from tools like arpspoof and ettercap.
+* **ICMP Flood** - from tools like fping and hping.
+* **VLAN Hopping** -  from tools like frogger and yersinia (future work).
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/1d6de77c-da21-48cd-83d3-9e6052d6081c)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/dae284cc-ec0a-4f46-913a-2522c32c3c66)
 
 ### Detection of Network Port Scanning
 
 Using this option we can detect:
-* TCP SYN Scan or Stealth Scan - from tools like nmap.
-* TCP Xmass Scan - from tools like nmap.
-* TCP Null Scan - from tools like nmap.
-* TCP FIN Scan - from tools like nmap.
-* TCP Connect() Scan - from tools like nmap.
-* UDP Port Scan - from tools like nmap.
+* **TCP SYN Scan or Stealth Scan** - from tools like nmap.
+* **TCP Xmass Scan** - from tools like nmap.
+* **TCP Null Scan** - from tools like nmap.
+* **TCP FIN Scan** - from tools like nmap.
+* **TCP Connect() Scan** - from tools like nmap.
+* **UDP Port Scan** - from tools like nmap.
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/8cbde564-7f5a-429c-8178-cd791beb4af7)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/5173defd-1497-4573-82be-108aadff2f80)
 
 ### Detection of Host Discovery
 
 Using this option we can detect:
-* ARP Scanning - from tools like arp-scan.
-* IP Protocol Scan - from tools like nmap.
-* ICMP Ping Sweeps - from tools like nmap.
-* TCP Ping Sweeps - from tools like nmap.
-* UDP Ping Sweeps - from tools like nmap.
+* **ARP Scanning** - from tools like arp-scan.
+* **IP Protocol Scan** - from tools like nmap.
+* **ICMP Ping Sweeps** - from tools like nmap.
+* **TCP Ping Sweeps** - from tools like nmap.
+* **UDP Ping Sweeps** - from tools like nmap.
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/1bc3607f-e347-4071-8b68-da14ea384a6d)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/c225e008-bcfb-4c12-88ba-4be780a7ee1f)
 
 ### Detection of Unauthorized Login Attempts
 
 This is an ongoing future work on WiFi-NID.
 
 Using this option we can detect:
-* SSH Unauthorized Login Attempts
-* FTP Unauthorized Login Attempts
-* RDP Unauthorized Login Attempts
+* **SSH Unauthorized Login Attempts**
+* **FTP Unauthorized Login Attempts**
+* **RDP Unauthorized Login Attempts**
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/085183d1-fb9b-445d-96f3-0fc7d3f9e732)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/fe6b9fbf-e7a9-42fa-8708-19f7cef0d5e7)
 
 ## Examples
 
