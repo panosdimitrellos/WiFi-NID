@@ -4,20 +4,21 @@
 # sudo apt-get install figlet
 # sudo apt-get install lolcat
 
-echo -e "Welcome to NetSec-Analyzer.\n"
-
-figlet "NetSec-Analyzer" | lolcat
-
-echo -e "                                                                               By Panagiotis Dimitrellos"
-echo -e "                                                     https://github.com/panosdimitrellos/NetSec-Analyzer"
-
 LRED="\e[91m"
 GREEN="\e[32m"
 CYAN="\e[36m"
 ENDCOLOR="\e[0m"
 
+echo -e "Welcome to WiFi-NID :) \n"
+
+figlet ">>>> WiFi-NID <<<<" | lolcat
+
+echo -e "                                                                      By Panagiotis Dimitrellos"
+echo -e "                                                   https://github.com/panosdimitrellos/WiFi-NID\n"
+
+
 Deauthentication(){
-    echo "-----------------------------------------------------------------------------------------------------------------------------------"
+    echo "-------------------------------------------------------------------------------------------------------------------------------------"
     echo -e  "${LRED}Full report of Deauthentication Frames:\n${ENDCOLOR}"
     echo "frame.number      wlan.sa               wlan.da                         frame.time"
     tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 12)' -n -t ad -T fields -e frame.number -e wlan.sa -e wlan.da -e frame.time
@@ -33,7 +34,7 @@ Deauthentication(){
         source=$(echo $most_packets | awk --field-separator ' ' '{ print $2 }')
         # compare the packet count to a threshold value to determine if it indicates a possible attack
         if [ $packet_count -gt 50 ]; then
-            echo -e "   Possible Deauthentication DoS attack detected involving MAC address $source due to high number of Deauthentication packets."
+            echo -e "   Deauthentication DoS attack detected involving MAC address $source due to high number of Deauthentication packets."
             echo -e "   If this happens in a high volume and in a small period of time, that indicates a high possibility of such an attack."
         else
             echo -e "   No indication of malicious packets found."
@@ -62,7 +63,7 @@ Disassociation(){
         source=$(echo $most_packets | awk --field-separator ' ' '{ print $2 }')
         # compare the packet count to a threshold value to determine if it indicates a possible attack
         if [ $packet_count -gt 50 ]; then
-            echo -e "   Possible Disassociation DoS attack detected involving MAC address $source due to high number of Disassociation packets."
+            echo -e "   Disassociation DoS attack detected involving MAC address $source due to high number of Disassociation packets."
             echo -e "   If this happens in a high volume and in a small period of time, that indicates a high possibility of such an attack."
         else
             echo -e "   No indication of malicious packets found."
@@ -86,7 +87,7 @@ Authentication(){
     if tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 11)' -n | grep -q '.*'; then
         targets=$(tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 11)' -n | awk '{print $5}' | sort | uniq --count | awk '$1 > 100 {print "   ", $2, "was targeted", $1, "times."}')
         if [ ! -z "$targets" ]; then
-            echo -e "   Possible Authentication DoS attack detected due to high number of Authentication packets comming from multiple MAC addresses."
+            echo -e "   Authentication DoS attack detected due to high number of Authentication packets comming from multiple MAC addresses."
             echo -e "   Targeted MACs:\n$targets\n"
         else
             echo -e "   No indication of malicious packets found."
@@ -107,7 +108,7 @@ BeaconFlood(){
     if tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 8) && (frame.len < 150) ' -n | awk --field-separator ' ' '{ print $3 " " $14}' | sort | uniq --count| grep -q '.*'; then
         ssid_count=$(tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 8) && (frame.len < 150) ' -n | awk --field-separator ' ' '{ print $14 }' | sort | uniq -c | wc -l)
         if [ $ssid_count -gt 50 ]; then
-            echo -e "   Possible Beacon Flood attack detected due to high number of random beacons."
+            echo -e "   Beacon Flood attack detected due to high number of random beacons."
             echo -e "   If this happens in a high volume and in a small period of time, that indicates a high possibility of such an attack."
         else
             echo -e "   No indication of malicious packets found."
@@ -132,7 +133,7 @@ WPSBruteforce(){
         malicious=$(tshark -r $pcap_file -Y '(wps.configuration_error == 0x0012)' -n | awk '{print $5}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '(wps.configuration_error == 0x0012)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 3 {print "   ", $2, "was targeted", $1, "times."}')
         if [ ! -z "$targets" ]; then
-            echo -e "   Possible WPS bruteforce attack detected due to high number of EAP packets of WPS with Device Password Authentication Error."
+            echo -e "   WPS bruteforce attack detected due to high number of EAP packets of WPS with Device Password Authentication Error."
             echo -e "   Targeted MACs:\n$targets"
             echo -e "   Malicious MACs:\n$malicious\n"
         else
@@ -157,7 +158,7 @@ StealthScan(){
     if tshark -r $pcap_file -Y '(tcp.window_size_value <= 1024 and tcp.hdr_len == 24 and tcp.flags == 0x002)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(tcp.window_size_value <= 1024 and tcp.hdr_len == 24 and tcp.flags == 0x002)' -n | awk '{print $3}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '(tcp.window_size_value <= 1024 and tcp.hdr_len == 24 and tcp.flags == 0x002)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq | awk '{ print "   ", $1 }')
-        echo -e "   Possible TCP SYN/Stealth Scan detected. These TCP SYN scans propably came from Nmap tool."
+        echo -e "   TCP SYN/Stealth Scan detected. These TCP SYN scans propably came from Nmap tool."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"
     else
@@ -179,7 +180,7 @@ XmassScan(){
     if tshark -r $pcap_file -Y '((tcp.flags.fin==1 && tcp.flags.push==1 && tcp.flags.urg==1) && (tcp.window_size_value == 1024)) && (tcp.hdr_len == 20)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '((tcp.flags.fin==1 && tcp.flags.push==1 && tcp.flags.urg==1) && (tcp.window_size_value == 1024)) && (tcp.hdr_len == 20)' -n | awk '{print $3}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '((tcp.flags.fin==1 && tcp.flags.push==1 && tcp.flags.urg==1) && (tcp.window_size_value == 1024)) && (tcp.hdr_len == 20)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq | awk '{ print "   ", $1 }')
-        echo -e "   Possible TCP Xmass Scan detected. These TCP Xmass scans propably came from Nmap tool."
+        echo -e "   TCP Xmass Scan detected. These TCP Xmass scans propably came from Nmap tool."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"
     else
@@ -199,22 +200,20 @@ ConnectScan(){
     tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | uniq --count | sort -rnk1,1 
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
     if tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort -rn | uniq --count| grep -q '.*'; then
-        malicious=$(tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
-        targets=$(    tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq -c | sort -rn | awk '{ print "   ", $2 }')
-        echo -e "   Possible TCP Connect() Nmap Scan detected. These TCP Connect() scans propably came from Nmap tool"
-        echo -e "   Bellow are being displayed the IP addresses from the least to most potential targets."
+        malicious=$(tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 100 {print "   ", $2}')
+        targets=$(    tshark -r $pcap_file -Y '(tcp.completeness==39)||(tcp.flags.syn==1 and tcp.flags.ack==0 and tcp.window_size > 1024)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq -c | sort -rn | awk '$1 > 100 { print "   ", $2 }')
+        echo -e "   TCP Connect() Nmap Scan detected. These TCP Connect() scans propably came from Nmap tool"
+        echo -e "   This scan is being detected if the attacker performs a scanning on more than 100 ports."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"
         echo -e "   To further investigate this attack, check the TCP Conversation Completeness in Wireshark with the filter 'tcp.completeness==39'."
-        echo -e "   The number 39 means there were no data transferred in the conversations and no FIN flags set, which is suspicious."
-        echo -e "   If NetSec-Analyzer also displayed a large amount of packets this indicates a TCP Connect() Nmap Scan."
+        echo -e "   Number 39 indicates that no data was transferred in the conversations and no FIN flags were set, which is considered suspicious."
+        echo -e "   If WiFi-NID also displayed a large amount of packets this indicates a TCP Connect() Nmap Scan."
     else
         echo -e "   No indication of malicious packets found."
     fi    
     echo -e "\n-----------------------------------------------------------------------------------------------------------------------------------\n"
     DONPS 
-
-
 }
 
 NullScan(){
@@ -229,7 +228,7 @@ NullScan(){
     if tshark -r $pcap_file -Y '(tcp.flags==0)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count| grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(tcp.flags==0)' -n | awk '{print $3}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '(tcp.flags==0)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq | awk '{ print "   ", $1}')
-        echo -e "   Possible TCP NULL Scan detected. These TCP NULL scans propably came from Nmap tool."
+        echo -e "   TCP NULL Scan detected. These TCP NULL scans propably came from Nmap tool."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"
     else
@@ -251,7 +250,7 @@ FinScan(){
     if tshark -r $pcap_file -Y '(tcp.flags==0x001)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count| grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(tcp.flags==0x001)' -n | awk '{print $3}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '(tcp.flags==0x001)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq | awk '{ print "    ", $1 }')
-        echo -e "   Possible TCP FIN Scan detected. These TCP FIN scans propably came from Nmap tool."
+        echo -e "   TCP FIN Scan detected. These TCP FIN scans propably came from Nmap tool."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"    
     else
@@ -264,8 +263,8 @@ FinScan(){
 UdpScan(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of UDP Port Scan Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst     tcp.srcport tcp.dstport         frame.time"
-    tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e frame.time
+    echo "frame.number   ip.src     ip.dst     udp.srcport udp.dstport         frame.time"
+    tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e udp.srcport -e udp.dstport -e frame.time
     echo -e "\n${LRED}UDP Port Scan Technique statistics:${ENDCOLOR}\n"
     echo "Packets    Source      Destination"
     tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count
@@ -273,7 +272,7 @@ UdpScan(){
     if tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count| grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n | awk '{print $3}' | sort | uniq --count | awk '{print "    ", $2}')
         targets=$(tshark -r $pcap_file -Y '(ip.proto == 17) && (udp.length == 8)' -n | awk --field-separator ' ' '{ print $5 }' | sort | uniq | awk '{ print "    ", $1 }')
-        echo -e "   Possible TCP NULL Scan detected. These TCP NULL scans propably came from Nmap tool."
+        echo -e "   UDP Scan detected. These UDP scans propably came from Nmap tool."
         echo -e "   Targeted IPs:\n$targets"
         echo -e "   Malicious IPs:\n$malicious\n"   
     else
@@ -331,7 +330,7 @@ ARPScan(){
     if tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2, "transmitted", $1, "packets."}')
         if [ ! -z "$malicious" ]; then
-            echo -e "   Possible ARP Scan detected due to high number of ARP packets being transmitted from a single MAC address."
+            echo -e "   ARP Scan detected due to high number of ARP packets being transmitted from a single MAC address."
             echo -e "   Malicious MACs:\n$malicious"
         else
             echo -e "   No indication of malicious packets found."
@@ -356,7 +355,7 @@ IPProtocolScan(){
         malicious=$(tshark -r $pcap_file -Y '(ip.version == 4) && (frame.protocols == "sll:ethertype:ip")' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '(ip.version == 4) && (frame.protocols == "sll:ethertype:ip")' -n | awk '{print $5}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
         if [ ! -z "$malicious" ]; then
-            echo -e "   Possible IP Protocol Scan detected due to high number of IPv4 packets being transmitted from a single IP address."
+            echo -e "   IP Protocol Scan detected due to high number of IPv4 packets being transmitted from a single IP address."
             echo -e "   Target IPs:\n$targets"
             echo -e "   Malicious IPs:\n$malicious"
         else
@@ -372,7 +371,7 @@ IPProtocolScan(){
 ICMPPingSweeps(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of ICMP Ping Sweeps Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst     tcp.srcport tcp.dstport         frame.time"
+    echo "frame.number   ip.src     ip.dst              frame.time"
     tshark -r $pcap_file -Y '(icmp.type==8 or icmp.type==0)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e frame.time
     echo -e "\n${LRED}ICMP Ping Sweeps statistics:${ENDCOLOR}\n"
     echo "Packets    Source      Destination"
@@ -381,7 +380,7 @@ ICMPPingSweeps(){
     if tshark -r $pcap_file -Y '(icmp.type==8 or icmp.type==0)' -n | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '(icmp.type==8 or icmp.type==0)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
         if [ ! -z "$malicious" ]; then
-            echo -e "   Possible ICMP Ping sweeping detected due to high number of ICMP packets being transmitted from a single IP address targeting"
+            echo -e "   ICMP Ping sweeping detected due to high number of ICMP packets being transmitted from a single IP address targeting"
             echo -e "   a subnet."
             echo -e "   Malicious IPs:\n$malicious"
             echo -e "   If we see a high volume of such traffic destined to many different IP addresses, it means somebody is probably performing"
@@ -407,7 +406,7 @@ TCPPingSweeps(){
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
     if tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
-        echo -e "   Possible TCP Ping sweeping detected due to high number of TCP packets being transmitted from a single IP address targeting"
+        echo -e "   TCP Ping sweeping detected due to high number of TCP packets being transmitted from a single IP address targeting"
         echo -e "   a subnet."
         echo -e "   Also the packets have window size value 1024 which is very small and unusual and that indicates suspicious traffic."
         echo -e "   Malicious IPs:\n$malicious"
@@ -423,7 +422,7 @@ TCPPingSweeps(){
 UDPPingSweeps(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of UDP Ping Sweeps Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst     tcp.srcport tcp.dstport         frame.time"
+    echo "frame.number   ip.src     ip.dst              frame.time"
     tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 17) && (ip.len == 68))' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e frame.time
     echo -e "\n${LRED}UDP Ping Sweeps statistics:${ENDCOLOR}\n"
     echo "Packets    Source      Destination"
@@ -431,7 +430,7 @@ UDPPingSweeps(){
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
     if tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 17) && (ip.len == 68))' -n | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 17) && (ip.len == 68))' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
-        echo -e "   Possible UDP Ping sweeping detected due to high number of UDP packets being transmitted from a single IP address targeting"
+        echo -e "   UDP Ping sweeping detected due to high number of UDP packets being transmitted from a single IP address targeting"
         echo -e "   a subnet."
         echo -e "   Also the packets have 'Total Length' of 68 which is very small and unusual and that indicates suspicious traffic."
         echo -e "   Malicious IPs:\n$malicious"
@@ -456,9 +455,9 @@ ARPPoisoning(){
     if tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | grep -q '.*'; then
         malicious=$(tshark -r "$pcap_file" -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | awk '{ print $3; print $5 }' | sort | uniq --count | sort -rnk1,1 | head -n 1 | awk '{print $2}')
         targets=$(tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | sort -rnk1,1 | awk -v malicious="$malicious" '$2 == malicious && $4 != malicious {print "    " $4}')
-        echo -e "   Possible ARP Poisoning attack detected due to ARP duplicate addresses."
+        echo -e "   ARP Poisoning attack detected due to ARP duplicate addresses."
+        echo -e "   Targeted MACs:\n$targets"
         echo -e "   Malicious MACs\n""    $malicious"
-        echo -e "   List from most to least potential targeted MACs:\n$targets"
     else
         echo -e "   No indication of malicious packets found."
     fi 
@@ -479,9 +478,9 @@ ICMPFlood(){
     if tshark -r $pcap_file -Y '((icmp.type == 8 and icmp.code == 0 and data.len > 48) && (data.data == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00))' -n | grep -q '.*'; then
         malicious=$(tshark -r $pcap_file -Y '((icmp.type == 8 and icmp.code == 0 and data.len > 48) && (data.data == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00))' -n | awk '{print $3}' | sort | uniq --count | awk '{print "   ", $2}')
         targets=$(tshark -r $pcap_file -Y '((icmp.type == 8 and icmp.code == 0 and data.len > 48) && (data.data == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00))' -n | awk '{print $5}' | sort | uniq --count | awk '{print "   ", $2}')        
-        echo -e "   Possible ICMP flood attack detected due to multiple ICMP packets transmitted with no data targeting a single IP."
-        echo -e "   Malicious IPs:\n$malicious"
+        echo -e "   ICMP flood attack detected due to multiple ICMP packets transmitted with no data targeting a single IP."
         echo -e "   Targeted IPs:\n$targets"
+        echo -e "   Malicious IPs:\n$malicious"
     else
         echo -e "   No indication of malicious packets found."
     fi
@@ -818,36 +817,4 @@ do
 done
 }
 
-
-CheckInstalls(){
-if ! command -v tshark &>/dev/null; then
-    echo "tshark is not installed on this system. Installing tshark..."
-    if [ -x "$(command -v apt-get)" ]; then
-        sudo apt-get update
-        sudo apt-get install -y tshark
-    elif [ -x "$(command -v yum)" ]; then
-        sudo yum update
-        sudo yum install -y tshark
-    else
-        echo "Could not determine package manager. Please install tshark manually and try again."
-        Quit
-    fi
-fi
-
-if (! command -v figlet &>/dev/null)&&(! command -v lolcat &>/dev/null); then
-    echo "figlet and lolcat are not installed on this system. Installing figlet and lolcat... "
-    if [ -x "$(command -v apt-get)" ]; then
-        sudo apt-get update
-        sudo apt-get install -y figlet lolcat
-    elif [ -x "$(command -v yum)" ]; then
-        sudo yum update
-        sudo yum install -y figlet lolcat
-    else
-        echo "Could not determine package manager. Please install figlet manually and try again."
-        Quit
-    fi
-fi
-}
-
-#CheckInstalls
 mainmenu
