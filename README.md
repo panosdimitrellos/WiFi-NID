@@ -28,10 +28,15 @@ Ideally, you should be able to just type:
 ```
 git clone https://github.com/panosdimitrellos/WiFi-NID.git 
 ```
+After that go to the downloaded folder and install install the required packages:
+```
+bash install_required_packages.sh
+```
 
 ## Supported features
 
-Capture and analyze pcap packets
+Analyze already captured pcap files or capture live traffic and start analyzing them.
+
 ![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/427f5d78-8b86-491e-bb5d-17c259bf01e9)
 
 ### Detection of Wireless Network Attacks
