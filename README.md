@@ -109,7 +109,7 @@ Using this option we can detect:
 
 ## Examples
 
-Here an example of using WiFi-NID:
+Here is an example of using WiFi-NID:
 
 * Analyzing a captured pcap file (LAB.pcapng) for Deauthentication attacks:
 
