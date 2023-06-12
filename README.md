@@ -2,10 +2,12 @@
 
 
 ![wifinid-small](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/0b17f762-e7b6-42cf-9dd2-dcf192bebcc2)
-![GNU Bash](https://img.shields.io/badge/GNU_bash-5.2.15-brightgreen?logo=gnu-bash&logoColor=white&style=flat)
-![TShark (Wireshark)](https://img.shields.io/badge/TShark%20(Wireshark)-4.0.3-blue?logo=wireshark&logoColor=white&style=flat)
-![Code Size](https://img.shields.io/github/languages/code-size/panosdimitrellos/WiFi-NID?color=black)
-![License](https://img.shields.io/github/license/panosdimitrellos/WiFi-NID)
+<p align="center">
+<img src="https://img.shields.io/badge/GNU_bash-5.2.15-brightgreen?logo=gnu-bash&logoColor=white&style=flat" /> 
+<img src="https://img.shields.io/badge/TShark%20(Wireshark)-4.0.3-blue?logo=wireshark&logoColor=white&style=flat"/>
+<img src="https://img.shields.io/github/languages/code-size/panosdimitrellos/WiFi-NID?color=black"/>
+<img src="https://img.shields.io/github/license/panosdimitrellos/WiFi-NID"/>
+</p>
 
 ## About
 
