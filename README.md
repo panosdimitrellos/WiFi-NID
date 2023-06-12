@@ -1,6 +1,7 @@
 # WiFi-NID
 
-![Untitled-1](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/73240a9d-5b6b-478f-8a61-da31eec21ad5)
+
+![wifinid-small](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/0b17f762-e7b6-42cf-9dd2-dcf192bebcc2)
 
 ## About
 
