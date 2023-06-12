@@ -120,9 +120,8 @@ Here is an example of using WiFi-NID:
 
 * Analyzing a captured pcap file (LAB.pcapng) for Deauthentication attacks:
 
-![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/ea93832d-3543-4a88-95b7-8ba0dd22f182)
+![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/4412cc90-ddd4-41a3-8fc2-95d75eae36c6)
 ...
-
 ![image](https://github.com/panosdimitrellos/WiFi-NID/assets/34653518/56194de2-fc6a-434e-b060-63a08ab1ae09)
 
 ## Contributing
