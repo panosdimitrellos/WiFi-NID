@@ -1,8 +1,5 @@
 #! /bin/bash
 
-# sudo apt-get install tshark 
-# sudo apt-get install figlet
-# sudo apt-get install lolcat
 
 LRED="\e[91m"
 GREEN="\e[32m"
