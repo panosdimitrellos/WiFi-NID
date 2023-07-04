@@ -9,7 +9,7 @@ ENDCOLOR="\e[0m"
 echo "
        @@@@@  @@@@@ @@@@@@      @@@@@@@@@@@               @@@@@@   @@@@@ @@@@@ @@@@@&&&@@@@@@
       @@@@@@.@@@@@.@@@@@@.@@@@.@@@@@@.......@@@@@        @@@@@@@.&@@@@@.@@@@@.@@@@@....@@@@@.
-      @&&@@.&@&@@..@&&@@.@&&@@.@&&&&######@.@&&@.%((((% @&&&@@@&#%&&@@.@@@@@.@&&&@@. .@&&@@.
+      @&&@@.&@&@@..@&&@@.@&&@@.@&&&&@@@@@&@.@&&@.%((((% @&&&@@@&#%&&@@.@@@@@.@&&&@@. .@&&@@.
      @@@@@..@@@@,.@@@@@,@@@@@,@@@@@,.......@@@@@.......@@@@@@,@@@@@@@,@@@@@,@@@@@@...@@@@@#
      @@&&@@@@@&@@@@&&@.@@@@@.@@&@@..      @@@@@.      #@@&@@...@@&@&,@@@@@,&@&@@@@@&@@@&@.
 " | lolcat
@@ -21,7 +21,7 @@ echo -e "                                                   https://github.com/p
 Deauthentication(){
     echo "-------------------------------------------------------------------------------------------------------------------------------------"
     echo -e  "${LRED}Full report of Deauthentication Frames:\n${ENDCOLOR}"
-    echo "frame.number      wlan.sa               wlan.da                         frame.time"
+    echo "frame.number    wlan.sa               wlan.da                           frame.time"
     tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 12)' -n -t ad -T fields -e frame.number -e wlan.sa -e wlan.da -e frame.time
     echo -e "${LRED}\nDeauthentication frames statistics:\n${ENDCOLOR}"
     echo "Packets      Source            Destination"
@@ -35,7 +35,7 @@ Deauthentication(){
         source=$(echo $most_packets | awk --field-separator ' ' '{ print $2 }')
         # compare the packet count to a threshold value to determine if it indicates a possible attack
         if [ $packet_count -gt 50 ]; then
-            echo -e "   Deauthentication DoS attack detected involving MAC address $source due to high number of Deauthentication packets."
+            echo -e "   Deauthentication DoS attack detected involving MAC address $source due to the high number of Deauthentication packets."
             echo -e "   If this happens in a high volume and in a small period of time, that indicates a high possibility of such an attack."
         else
             echo -e "   No indication of malicious packets found."
@@ -50,7 +50,7 @@ Deauthentication(){
 Disassociation(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of Disassociation Frames:\n${ENDCOLOR}"
-    echo "frame.number      wlan.sa               wlan.da                         frame.time"
+    echo "frame.number    wlan.sa               wlan.da                           frame.time"
     tshark -r $pcap_file -Y '(wlan.fc.type_subtype == 10)' -n -t ad -T fields -e frame.number -e wlan.sa -e wlan.da -e frame.time
     echo -e "${LRED}\nDisassociation frames statistics:\n${ENDCOLOR}"
     echo "Packets      Source            Destination"
@@ -64,7 +64,7 @@ Disassociation(){
         source=$(echo $most_packets | awk --field-separator ' ' '{ print $2 }')
         # compare the packet count to a threshold value to determine if it indicates a possible attack
         if [ $packet_count -gt 50 ]; then
-            echo -e "   Disassociation DoS attack detected involving MAC address $source due to high number of Disassociation packets."
+            echo -e "   Disassociation DoS attack detected involving MAC address $source due to the high number of Disassociation packets."
             echo -e "   If this happens in a high volume and in a small period of time, that indicates a high possibility of such an attack."
         else
             echo -e "   No indication of malicious packets found."
@@ -150,7 +150,7 @@ WPSBruteforce(){
 StealthScan(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of TCP SYN Scan Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst     tcp.srcport tcp.dstport         frame.time"
+    echo "frame.number  ip.src      ip.dst     tcp.srcport tcp.dstport         frame.time"
     tshark -r $pcap_file -Y '(tcp.window_size_value <= 1024 and tcp.hdr_len == 24 and tcp.flags == 0x002)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e frame.time
     echo -e "\n${LRED}TCP SYN Scan Technique statistics:${ENDCOLOR}\n"
     echo "Packets    Source      Destination"
@@ -172,7 +172,7 @@ StealthScan(){
 XmassScan(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of TCP Xmass Scan Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst     tcp.srcport tcp.dstport         frame.time"
+    echo "frame.number  ip.src      ip.dst     tcp.srcport tcp.dstport         frame.time"
     tshark -r $pcap_file -Y '((tcp.flags.fin==1 && tcp.flags.push==1 && tcp.flags.urg==1) && (tcp.window_size_value == 1024)) && (tcp.hdr_len == 20)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport -e frame.time
     echo -e "${LRED}\nTCP Xmass Scan Technique statistics:\n${ENDCOLOR}"
     echo "Packets    Source      Destination"
@@ -322,16 +322,16 @@ RDPLog(){
 ARPScan(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of ARP frames${ENDCOLOR}"
-    echo "frame.number      eth.src              eth.dst                        frame.time"
+    echo "frame.number    eth.src              eth.dst                          frame.time"
     tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n -t ad -T fields -e frame.number -e arp.src.hw_mac -e arp.dst.hw_mac -e frame.time
     echo -e "\n${LRED}ARP frames statistics:${ENDCOLOR}\n"
     echo "Packets    Source           Destination"
     tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n -T fields -e arp.src.hw_mac -e arp.dst.hw_mac | awk --field-separator ' ' '{ print $1 " " $2 }' | sort | uniq --count | sort -rnk1,1
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
     if tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n | grep -q '.*'; then
-        malicious=$(tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2, "transmitted", $1, "packets."}')
+        malicious=$(tshark -r $pcap_file -Y '(arp.opcode == 1) && !(eth.padding == 00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 150 {print "   ", $2, "transmitted, ", $1, "packets."}')
         if [ ! -z "$malicious" ]; then
-            echo -e "   ARP Scan detected due to high number of ARP packets being transmitted from a single MAC address."
+            echo -e "   ARP Scan detected due to the high number of ARP packets being transmitted from a single MAC address."
             echo -e "   Malicious MACs:\n$malicious"
         else
             echo -e "   No indication of malicious packets found."
@@ -399,22 +399,30 @@ ICMPPingSweeps(){
 TCPPingSweeps(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of TCP Ping Sweeps Technique${ENDCOLOR}"
-    echo "frame.number   ip.src     ip.dst             frame.time"
-    tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n -t ad -T fields -e frame.number -e ip.src -e ip.dst -e frame.time
+    echo "frame.number              frame.time               ip.src          ip.dst                 Info"
+    frame=$(tshark -r lab.pcapng -Y '(icmp.code==1) && (icmp.type == 3) && (ip.proto == 6) ' -n -t ad -T fields -e frame.number)    
+    frametime=$(tshark -r lab.pcapng -Y '(icmp.code==1) && (icmp.type == 3) && (ip.proto == 6) ' -n -t ad -T fields -e frame.time)
+    source=$(tshark -r lab.pcapng -Y '(icmp.code==1) && (icmp.type == 3) && (ip.proto == 6) ' -n -t ad -T fields -e ip.src | awk --field-separator ',' '{print $1}')
+    destination=$(tshark -r lab.pcapng -Y '(icmp.code==1) && (icmp.type == 3) && (ip.proto == 6) ' -n -t ad -T fields -e ip.dst | awk --field-separator ',' '{print $2}')
+    info=$(tshark -r lab.pcapng -Y '(icmp.code==1) && (icmp.type == 3) && (ip.proto == 6) ' -n -t ad -T fields -e _ws.col.Info)
+    paste <(printf "%s\n" "${frame[@]}") <(printf "%s\n" "${frametime[@]}") <(printf "%s\n" "${source[@]}") <(printf "%s\n" "${destination[@]}") <(printf "%s\n" "${info[@]}")
     echo -e "\n${LRED}TCP Ping Sweeps statistics:${ENDCOLOR}\n"
     echo "Packets    Source      Destination"
-    tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | sort -rnk1,1
+    paste <(printf "%s\n" "${source[@]}") <(printf "%s\n" "${destination[@]}") | sort | uniq --count | sort -rnk1,1 
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
-    if tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n | grep -q '.*'; then
-        malicious=$(tshark -r $pcap_file -Y '((ip.version == 4) && (ip.proto == 6) ) && (tcp.window_size_value == 1024)' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 500 {print "   ", $2}')
-        echo -e "   TCP Ping sweeping detected due to high number of TCP packets being transmitted from a single IP address targeting"
-        echo -e "   a subnet."
-        echo -e "   Also the packets have window size value 1024 which is very small and unusual and that indicates suspicious traffic."
-        echo -e "   Malicious IPs:\n$malicious"
-        echo -e "   If we see a high volume of such traffic destined to many different IP addresses, it means somebody is probably performing"
-        echo -e "   TCP ping sweeping to find alive hosts on the network."
+    count=$(tshark -r $pcap_file -Y '(icmp.code==1) &&  (icmp.type == 3) && (ip.proto == 6) ' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | sort -rnk1,1 | awk --field-separator ' ' '{print $1}')
+    if tshark -r $pcap_file -Y '(icmp.code==1) &&  (icmp.type == 3) && (ip.proto == 6) ' -n | grep -q '.*'; then
+        malicious=$(tshark -r $pcap_file -Y '(icmp.code==1) &&  (icmp.type == 3) && (ip.proto == 6) ' -n | awk '{print $3}' | sort | uniq --count | awk '$1 > 100 {print "   ", $2}')
+        if [ ! -z "$malicious" ]; then
+            echo -e "   TCP Ping sweeping detected over the network."
+            echo -e "   Malicious IPs:\n$malicious"
+            echo -e "   If we see a high volume of such traffic targeting many different IP addresses, it means somebody is probably performing"
+            echo -e "   TCP ping sweeping to find alive hosts on the network."
+        else
+            echo -e "   No indication of malicious packets found."
+        fi
     else
-        echo -e "   No indication of malicious packets found."
+            echo -e "   No indication of malicious packets found."
     fi 
     echo -e "\n-----------------------------------------------------------------------------------------------------------------------------------\n"
     DOHD
@@ -448,14 +456,14 @@ ARPPoisoning(){
     echo "-----------------------------------------------------------------------------------------------------------------------------------"
     echo -e "${LRED}Full report of ARP Poisoning Technique${ENDCOLOR}"
     echo "frame.number          frame.time                     eth.src            eth.dst                     info"
-    tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n -n -t ad -T fields -e frame.number -e frame.time -e eth.src -e eth.dst -e _ws.col.Info
+    tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n -t ad -T fields -e frame.number -e frame.time -e arp.src.hw_mac -e arp.dst.hw_mac -e _ws.col.Info
     echo -e "\n${LRED}ARP Poisoning statistics:${ENDCOLOR}\n"
     echo "Packets        Source          Destination"
-    tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | sort -rnk1,1
+    tshark -r $pcap_file  -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)'  -n -t ad -T fields -e frame.number -e frame.time -e arp.src.hw_mac -e arp.dst.hw_mac -e _ws.col.Info| awk --field-separator ' ' '{ print $7 " " $8 }' | sort | uniq --count | sort -rnk1,1
     echo -e "${LRED}\nObservations:\n${ENDCOLOR}"
-    if tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | grep -q '.*'; then
-        malicious=$(tshark -r "$pcap_file" -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | awk '{ print $3; print $5 }' | sort | uniq --count | sort -rnk1,1 | head -n 1 | awk '{print $2}')
-        targets=$(tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | awk --field-separator ' ' '{ print $3 " " $4 " " $5 }' | sort | uniq --count | sort -rnk1,1 | awk -v malicious="$malicious" '$2 == malicious && $4 != malicious {print "    " $4}')
+    if tshark -r $pcap_file  -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n | grep -q '.*'; then
+        malicious=$(tshark -r $pcap_file -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n -T fields -e arp.src.hw_mac -e arp.dst.hw_mac| awk '{ print $1; print $2 }' | sort | uniq --count | sort -rnk1,1 | head -n 1 | awk '{print $2}')
+        targets=$(tshark -r $pcap_file  -Y '(arp.duplicate-address-detected or arp.duplicate-address-frame)' -n -T fields -e arp.src.hw_mac -e arp.dst.hw_mac | awk --field-separator ' ' '{ print $1 " " $2 }' | sort | uniq --count | sort -rnk1,1 | awk -v malicious="$malicious" '$2 == malicious && $3 != malicious {print "    " $3}')
         echo -e "   ARP Poisoning attack detected due to ARP duplicate addresses."
         echo -e "   Targeted MACs:\n$targets"
         echo -e "   Malicious MACs\n""    $malicious"
@@ -463,8 +471,7 @@ ARPPoisoning(){
         echo -e "   No indication of malicious packets found."
     fi 
     echo -e "\n-----------------------------------------------------------------------------------------------------------------------------------\n"
-    DONA     
-
+    DONA
 }
 
 ICMPFlood(){
