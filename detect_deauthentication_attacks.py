@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.ndimage import median_filter
 
-csv = 'Captures\capture9.csv'
+csv = 'your_csv_file_here'
 
 # Read the CSV file and create a DataFrame
 df = pd.read_csv(csv)
@@ -32,8 +32,9 @@ outliers = [x if x > threshold else 0 for x in list(packet_counts)]
 
 attack_points = []
 
+# Check if there are any isolated outliers with 5 seconds time distance and exclude them from malicious traffic.
 for i in range(len(outliers)):
-    if i - 3 >= 0 and i + 3 < len(outliers):
+    if i - 5 >= 0 and i + 5 < len(outliers):
         if outliers[i - 5:i].count(0) > 4 and outliers[i + 1:i + 6].count(0) > 4:
             attack_points.append(0)
         else:
@@ -93,8 +94,8 @@ if threshold >= 1:
     # Create a scatter plot with seconds on the x-axis and result on the y-axis
     plt.axhline(y=threshold, color='red', linestyle='--', label='Dynamic Threshold')
     seconds_x = [seconds[i] for i in range(len(attack_points)) if attack_points[i] > 0]
-    result_y = [attack_points[i] for i in range(len(attack_points)) if attack_points[i] > 0]
-    plt.scatter(seconds_x, result_y,  c='red', s=30, marker='x', label='Malicious Traffic')
+    attack_points_y = [attack_points[i] for i in range(len(attack_points)) if attack_points[i] > 0]
+    plt.scatter(seconds_x, attack_points_y,  c='red', s=30, marker='x', label='Malicious Traffic')
     result = "Attack Detected"
     label = "Status:"
     plt.text(seconds.iloc[0], max(packet_counts), f"{label} {result}", verticalalignment='top', horizontalalignment='left', color='red')
