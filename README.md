@@ -14,6 +14,11 @@
 
 WiFi-NID is a powerful Network Intrusion Detection tool written in Bash designed to detect various types of attacks in WiFi networks and networks in general. With WiFi-NID, you can capture live traffic and analyze captured files to identify potential security threats. This README provides an overview of the tool's features and instructions on how to use them effectively.
 WiFi-NID offers an innovative approach to detecting malicious activity in WiFi networks, by focusing on WiFi specific attack features to identify attacks that originate from the 802.11 layer. As WiFi-NID operates at the edge of the WiFi network, it can be easily integrated as an add-on security mechanism and may be complementary to general IDS solutions that do not focus at the WiFi layer.
+For more details about the tool, please refer to this paper: https://ieeexplore.ieee.org/document/10218077.
+
+### Update:
+I extended my initial implementation to increase the efficiency of detection using mathematical and statistical techniques in `detect_deauthentication_attacks.py`. This approach can also be applied to detect Disassociation Attacks, Authentication DoS, and Fake AP Beacon Flooding. 
+More details can be found in the related journal paper here: https://www.itu.int/pub/S-JNL-VOL5.ISSUE1-2024-A07 
 
 ## Table of contents 
 
